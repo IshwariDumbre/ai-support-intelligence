@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic
+openai
+google-generativeai
+langchain
+langchain-openai
+langchain-google-genai
+chromadb
+pandas
+scikit-learn
+psycopg2-binary
