@@ -1,0 +1,32 @@
+[
+  {
+    "id": "T001",
+    "category": "refund",
+    "message": "My payment was deducted but my order was cancelled. I have not received my refund and it has been 5 days."
+  },
+  {
+    "id": "T002",
+    "category": "cancellation",
+    "message": "I want to cancel my order because I placed it by mistake. Can you tell me if I am eligible for a refund?"
+  },
+  {
+    "id": "T003",
+    "category": "payment",
+    "message": "My card was charged twice for the same order. I only placed one order."
+  },
+  {
+    "id": "T004",
+    "category": "refund",
+    "message": "My order was cancelled after payment was captured, but I still cannot see the refund in my account."
+  },
+  {
+    "id": "T005",
+    "category": "security",
+    "message": "The support agent asked me for my OTP and CVV to process my refund. Is that required?"
+  },
+  {
+    "id": "T006",
+    "category": "general_support",
+    "message": "My order was cancelled and I don't understand why. What should I do next?"
+  }
+]

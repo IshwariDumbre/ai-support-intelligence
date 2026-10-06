@@ -1,0 +1,11 @@
+REFUND POLICY
+
+Customers are eligible for a refund when an order is cancelled and payment has already been captured.
+
+Refund processing time depends on the payment method and financial institution.
+
+Customer support should never guarantee an exact refund date unless the payment system confirms it.
+
+If a customer reports that a refund has not arrived, support should collect the order number and transaction details and verify the refund status.
+
+Support agents must not request passwords, CVV numbers, OTPs, or full card numbers.

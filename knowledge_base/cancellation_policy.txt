@@ -1,0 +1,11 @@
+CANCELLATION POLICY
+
+Customers may receive a refund when an order is cancelled after payment has been captured.
+
+If an order is cancelled before payment is captured, no refund may be required.
+
+When a customer reports a cancelled order with a missing refund, support should verify the order status and payment status before providing a resolution.
+
+Support should not invent cancellation reasons or refund timelines.
+
+If additional information is required, request the order number and relevant transaction details.

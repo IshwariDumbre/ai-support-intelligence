@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Support Intelligence</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f8;
+
+            color: #1f2937;
+        }
+
+
+        header {
+
+            background: #111827;
+
+            color: white;
+
+            padding: 24px 40px;
+        }
+
+
+        header h1 {
+
+            margin: 0 0 8px;
+
+            font-size: 28px;
+        }
+
+
+        header p {
+
+            margin: 0;
+
+            color: #d1d5db;
+        }
+
+
+        main {
+
+            max-width: 1100px;
+
+            margin: 30px auto;
+
+            padding: 0 20px;
+        }
+
+
+        .card {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 24px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.06);
+        }
+
+
+        .card h2 {
+
+            margin-top: 0;
+        }
+
+
+        textarea {
+
+            width: 100%;
+
+            min-height: 150px;
+
+            padding: 14px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            resize: vertical;
+        }
+
+
+        button {
+
+            margin-top: 14px;
+
+            padding: 12px 22px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+
+        button:hover {
+
+            background: #1d4ed8;
+        }
+
+
+        button:disabled {
+
+            background: #9ca3af;
+
+            cursor: not-allowed;
+        }
+
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .metrics-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .metric {
+
+            background: #f9fafb;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 8px;
+
+            padding: 16px;
+
+            text-align: center;
+        }
+
+
+        .metric-value {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+        }
+
+
+        .metric-label {
+
+            font-size: 13px;
+
+            color: #6b7280;
+        }
+
+
+        .result-box {
+
+            background: #f9fafb;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 8px;
+
+            padding: 16px;
+
+            white-space: pre-wrap;
+        }
+
+
+        .label {
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+
+        .knowledge {
+
+            margin-bottom: 12px;
+
+            padding: 12px;
+
+            background: #eff6ff;
+
+            border-left:
+                4px solid #2563eb;
+
+            border-radius: 4px;
+        }
+
+
+        .loading {
+
+            display: none;
+
+            margin-top: 15px;
+
+            color: #6b7280;
+        }
+
+
+        .error {
+
+            color: #dc2626;
+
+            margin-top: 15px;
+        }
+
+
+        @media (max-width: 800px) {
+
+            .grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .metrics-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            header {
+
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        AI Support Intelligence
+    </h1>
+
+    <p>
+        AI-powered support analysis,
+        RAG and grounded response generation
+    </p>
+
+</header>
+
+
+<main>
+
+
+    <div class="card">
+
+        <h2>
+            Customer Complaint
+        </h2>
+
+
+        <textarea
+            id="complaint"
+            placeholder="Enter a customer support complaint..."
+        ></textarea>
+
+
+        <button
+            id="analyzeButton"
+            onclick="analyzeComplaint()"
+        >
+            Analyze Complaint
+        </button>
+
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            Analyzing complaint...
+        </div>
+
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+    </div>
+
+
+    <div
+        id="results"
+        style="display: none;"
+    >
+
+
+        <div class="card">
+
+            <h2>
+                AI Analysis
+            </h2>
+
+
+            <div class="grid">
+
+
+                <div class="result-box">
+
+                    <div class="label">
+                        Category
+                    </div>
+
+                    <div id="category"></div>
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <div class="label">
+                        Priority
+                    </div>
+
+                    <div id="priority"></div>
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <div class="label">
+                        Sentiment
+                    </div>
+
+                    <div id="sentiment"></div>
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <div class="label">
+                        Summary
+                    </div>
+
+                    <div id="summary"></div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Retrieved Knowledge
+            </h2>
+
+
+            <div id="knowledge"></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Generated Support Response
+            </h2>
+
+
+            <div
+                id="supportResponse"
+                class="result-box"
+            ></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                AI Performance Metrics
+            </h2>
+
+
+            <div class="metrics-grid">
+
+
+                <div class="metric">
+
+                    <div
+                        id="latency"
+                        class="metric-value"
+                    >
+                        -
+                    </div>
+
+                    <div class="metric-label">
+                        Latency
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div
+                        id="promptTokens"
+                        class="metric-value"
+                    >
+                        -
+                    </div>
+
+                    <div class="metric-label">
+                        Prompt Tokens
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div
+                        id="completionTokens"
+                        class="metric-value"
+                    >
+                        -
+                    </div>
+
+                    <div class="metric-label">
+                        Completion Tokens
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div
+                        id="totalTokens"
+                        class="metric-value"
+                    >
+                        -
+                    </div>
+
+                    <div class="metric-label">
+                        Total Tokens
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div
+                        id="cost"
+                        class="metric-value"
+                    >
+                        -
+                    </div>
+
+                    <div class="metric-label">
+                        Estimated Cost
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+async function analyzeComplaint() {
+
+
+    const complaint =
+        document
+            .getElementById("complaint")
+            .value
+            .trim();
+
+
+    const button =
+        document
+            .getElementById("analyzeButton");
+
+
+    const loading =
+        document
+            .getElementById("loading");
+
+
+    const error =
+        document
+            .getElementById("error");
+
+
+    const results =
+        document
+            .getElementById("results");
+
+
+    error.textContent = "";
+
+
+    if (!complaint) {
+
+        error.textContent =
+            "Please enter a customer complaint.";
+
+        return;
+    }
+
+
+    button.disabled = true;
+
+    loading.style.display = "block";
+
+    results.style.display = "none";
+
+
+    try {
+
+
+        const encodedComplaint =
+            encodeURIComponent(
+                complaint
+            );
+
+
+        const analysisResponse =
+            await fetch(
+
+                `http://127.0.0.1:8000/analyze?message=${encodedComplaint}`,
+
+                {
+                    method: "POST"
+                }
+
+            );
+
+
+        if (!analysisResponse.ok) {
+
+            throw new Error(
+                "Failed to analyze complaint."
+            );
+        }
+
+
+        const analysisData =
+            await analysisResponse.json();
+
+
+        const responseData =
+            await fetch(
+
+                `http://127.0.0.1:8000/generate-response?message=${encodedComplaint}`,
+
+                {
+                    method: "POST"
+                }
+
+            );
+
+
+        if (!responseData.ok) {
+
+            throw new Error(
+                "Failed to generate support response."
+            );
+        }
+
+
+        const responseResult =
+            await responseData.json();
+
+
+        document
+            .getElementById("category")
+            .textContent =
+            analysisData.analysis.category;
+
+
+        document
+            .getElementById("priority")
+            .textContent =
+            analysisData.analysis.priority;
+
+
+        document
+            .getElementById("sentiment")
+            .textContent =
+            analysisData.analysis.sentiment;
+
+
+        document
+            .getElementById("summary")
+            .textContent =
+            analysisData.analysis.summary;
+
+
+        const knowledgeContainer =
+            document.getElementById(
+                "knowledge"
+            );
+
+
+        knowledgeContainer.innerHTML = "";
+
+
+        responseResult
+            .retrieved_knowledge
+            .forEach(
+                function (item) {
+
+                    const knowledgeItem =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    knowledgeItem.className =
+                        "knowledge";
+
+
+                    knowledgeItem.textContent =
+                        item;
+
+
+                    knowledgeContainer
+                        .appendChild(
+                            knowledgeItem
+                        );
+
+                }
+            );
+
+
+        document
+            .getElementById(
+                "supportResponse"
+            )
+            .textContent =
+            responseResult.support_response;
+
+
+        const metrics =
+            responseResult.metrics;
+
+
+        document
+            .getElementById("latency")
+            .textContent =
+            `${metrics.latency_seconds}s`;
+
+
+        document
+            .getElementById("promptTokens")
+            .textContent =
+            metrics.prompt_tokens;
+
+
+        document
+            .getElementById("completionTokens")
+            .textContent =
+            metrics.completion_tokens;
+
+
+        document
+            .getElementById("totalTokens")
+            .textContent =
+            metrics.total_tokens;
+
+
+        document
+            .getElementById("cost")
+            .textContent =
+            `$${metrics.estimated_cost_usd}`;
+
+
+        results.style.display =
+            "block";
+
+
+    } catch (errorObject) {
+
+        error.textContent =
+            errorObject.message;
+
+    } finally {
+
+        button.disabled = false;
+
+        loading.style.display =
+            "none";
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>
